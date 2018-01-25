@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+h1 {
+  color: green;
+}
+.notification {
+  color:red;
+  background: lightcoral;
+  font-size: 26px;
+  border-style: solid;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
