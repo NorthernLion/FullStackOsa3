@@ -5,7 +5,9 @@ const morgan = require('morgan')
 
 app.use(bodyParser.json())
 
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
+morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
+
+app.use(morgan(':method :url :status :body :res[content-length] - :response-time ms'))
 
 let persons = [
   {
