@@ -2,6 +2,9 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const cors = require('cors')
+
+app.use(cors())
 
 app.use(bodyParser.json())
 
@@ -56,6 +59,19 @@ app.delete('/api/persons/:id', (req, res) => {
   persons = persons.filter(person => person.id !== id)
 
   res.status(204).end()
+})
+
+app.put('/api/persons/:id', (req, res) => {
+  const body = req.body
+  const id = Number(req.params.id)
+  
+  const updatedPerson = {
+    name: body.name,
+    number: body.number,
+    id: id
+  }
+
+  persons = persons.map(person => person.id !== id ? person : updatedPerson)
 })
 
 app.post('/api/persons', (req, res) => {
