@@ -3,6 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./models/person')
 
 app.use(cors())
 app.use(express.static('build'))
@@ -35,7 +36,20 @@ let persons = [
   }
 ]
 
+const formatPerson = (person) => {
+  return {
+    id: person.id,
+    name: person.name,
+    number: person.number
+  }
+}
+
 app.get('/api/persons', (req, res) => {
+  Person
+    .find({})
+    .then(persons => {
+      res.json(persons.map(formatPerson))
+    })
   res.json(persons)
 })
 
