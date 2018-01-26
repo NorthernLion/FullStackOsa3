@@ -36,19 +36,11 @@ let persons = [
   }
 ]
 
-const formatPerson = (person) => {
-  return {
-    id: person.id,
-    name: person.name,
-    number: person.number
-  }
-}
-
 app.get('/api/persons', (req, res) => {
   Person
     .find({})
     .then(persons => {
-      res.json(persons.map(formatPerson))
+      res.json(persons.map(Person.format))
     })
   res.json(persons)
 })
