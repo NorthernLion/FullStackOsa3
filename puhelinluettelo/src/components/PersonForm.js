@@ -28,4 +28,4 @@ const PersonForm = ({
   )
 }
 
-export default PesonForm
+export default PersonForm
