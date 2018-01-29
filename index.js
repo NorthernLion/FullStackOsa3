@@ -43,7 +43,7 @@ app.delete('/api/persons/:id', (req, res) => {
       res.status(204).end()
     })
     .catch(error => {
-      response.status(400).send({ error: 'There is no entry matching the given id'})
+      res.status(400).send({ error: 'There is no entry matching the given id' })
     })
 })
 
