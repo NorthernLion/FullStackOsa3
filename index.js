@@ -87,27 +87,30 @@ app.put('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
   const body = req.body
-  /*
-  if (persons.filter(person => person.name.toLowerCase() === body.name.toLowerCase()).length > 0) {
-    return res.status(400).json({error: `name must be unique`})
-  }
-  */
   if (body.number === undefined) {
-    return res.status(400).json({error: `number missing`})
+    return res.status(400).json({ error: `number missing` })
   }
   if (body.name === undefined) {
-    return res.status(400).json({error: `name missing`})
+    return res.status(400).json({ error: `name missing` })
   }
-
-  const person = new Person({
-    name: body.name,
-    number: body.number
-  })
-
-  person
-    .save()
-    .then(savedPerson => {
-      res.json(Person.format(savedPerson))
+  Person
+    .findOne({name:
+        { $regex: new RegExp('^' + body.name.toLowerCase(), 'i') }
+    })
+    .then(duplicatePerson => {
+      if (duplicatePerson) {
+        return res.status(400).json({ error: `duplicate name found` })
+      } else {
+        const person = new Person({
+          name: body.name,
+          number: body.number
+        })
+        person
+          .save()
+          .then(savedPerson => {
+            res.json(Person.format(savedPerson))
+          })
+      }
     })
 })
 
