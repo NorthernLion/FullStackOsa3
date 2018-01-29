@@ -6,35 +6,12 @@ const cors = require('cors')
 const Person = require('./models/person')
 
 app.use(cors())
-app.use(express.static('build'))
 app.use(bodyParser.json())
+app.use(express.static('build'))
 
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
 
 app.use(morgan(':method :url :status :body :res[content-length] - :response-time ms'))
-
-let persons = [
-  {
-    "name": "Arto Hellas",
-    "number": "040-123456",
-    "id": 1
-  },
-  {
-    "name": "Martti Tienari",
-    "number": "040-123456",
-    "id": 2
-  },
-  {
-    "name": "Arto Järvinen",
-    "number": "040-123456",
-    "id": 3
-  },
-  {
-    "name": "Lea Kutvonen",
-    "number": "040-123456",
-    "id": 4
-  }
-]
 
 app.get('/api/persons', (req, res) => {
   Person
@@ -42,7 +19,6 @@ app.get('/api/persons', (req, res) => {
     .then(persons => {
       res.json(persons.map(Person.format))
     })
-  res.json(persons)
 })
 
 app.get('/info', (req, res) => {

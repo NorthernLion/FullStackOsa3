@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Persons = ({ persons, removePerson}) => (
+const Persons = ({ persons, removePerson }) => (
   <div>
     <h2>Numerot</h2>
     <table>
@@ -11,7 +11,8 @@ const Persons = ({ persons, removePerson}) => (
               <td>{person.name}</td>
               <td>{person.number}</td>
               <td><button onClick={removePerson(person.id)}>poista</button></td>
-            </tr>)
+            </tr>
+          )
         }
       </tbody>
     </table>

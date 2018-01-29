@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
-const url = 'mongodb://jasperli:1@ds039058.mlab.com:39058/puhelinluettelo'
+const url = 'mongodb://admin:test@ds039058.mlab.com:39058/puhelinluettelo'
 
 mongoose.connect(url)
-mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise
 
 const Person = mongoose.model('Person', {
   id: String,
