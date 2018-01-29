@@ -43,20 +43,27 @@ app.delete('/api/persons/:id', (req, res) => {
       res.status(204).end()
     })
     .catch(error => {
-      res.status(400).send({ error: 'There is no entry matching the given id' })
+      res.status(400).send({ error: 'malformated id' })
     })
 })
 
 app.put('/api/persons/:id', (req, res) => {
   const body = req.body
-  const id = Number(req.params.id)
-  const updatedPerson = {
+
+  const person = {
     name: body.name,
-    number: body.number,
-    id: id
+    number: body.number
   }
 
-  persons = persons.map(person => person.id !== id ? person : updatedPerson)
+  Person
+    .findByIdAndUpdate(req.params.id, person, { new: true} )
+    .then(updatedPerson => {
+      res.json(Person.format(updatedPerson))
+    })
+    .catch(error => {
+      conlose.log(error)
+      res.status(400).send({ error: 'malformated id'})
+    })
 })
 
 app.post('/api/persons', (req, res) => {
