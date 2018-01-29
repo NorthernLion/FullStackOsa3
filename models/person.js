@@ -6,14 +6,13 @@ mongoose.connect(url)
 mongoose.Promise = global.Promise
 
 const Person = mongoose.model('Person', {
-  id: String,
   name: String,
   number: String
 })
 
 Person.format = function (person) {
   return {
-    id: person.id,
+    id: person._id,
     name: person.name,
     number: person.number
   }

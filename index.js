@@ -37,10 +37,14 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  persons = persons.filter(person => person.id !== id)
-
-  res.status(204).end()
+  Person
+    .findByIdAndRemove(req.params.id)
+    .then(result => {
+      res.status(204).end()
+    })
+    .catch(error => {
+      response.status(400).send({ error: 'There is no entry matching the given id'})
+    })
 })
 
 app.put('/api/persons/:id', (req, res) => {
@@ -71,8 +75,7 @@ app.post('/api/persons', (req, res) => {
 
   const person = new Person({
     name: body.name,
-    number: body.number,
-    id: generateId()
+    number: body.number
   })
 
   person
