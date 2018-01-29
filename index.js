@@ -19,21 +19,39 @@ app.get('/api/persons', (req, res) => {
     .then(persons => {
       res.json(persons.map(Person.format))
     })
+    .catch(error => {
+      console.log(error)
+      res.status(404).send({ error: 'Could not reach database' })
+    })
 })
 
 app.get('/info', (req, res) => {
-  res.send(`<p>puhelinluettelossa on ${persons.length} henkilön tiedot</p> ${new Date()}`)
+  Person
+    .count({})
+    .then(length => {
+      const infoMessage = `<p>puhelinluettelossa on ${length} henkilön tiedot</p> ${new Date()}`
+      res.send(infoMessage)
+    })
+    .catch(error => {
+      console.log(error)
+      res.status(404).send({ error: 'Could not reach database' })
+    })
 })
 
 app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(person => person.id === id)
-
-  if (person) {
-    res.json(person)
-  } else {
-    res.status(404).end()
-  }
+  Person
+    .findById(req.params.id)
+    .then(person => {
+      if (person) {
+        res.json(Person.format(person))
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      res.status(404).send({ error: 'malformated id' })
+    })
 })
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -43,6 +61,7 @@ app.delete('/api/persons/:id', (req, res) => {
       res.status(204).end()
     })
     .catch(error => {
+      console.log(error)
       res.status(400).send({ error: 'malformated id' })
     })
 })
@@ -56,13 +75,13 @@ app.put('/api/persons/:id', (req, res) => {
   }
 
   Person
-    .findByIdAndUpdate(req.params.id, person, { new: true} )
+    .findByIdAndUpdate(req.params.id, person, { new: true })
     .then(updatedPerson => {
       res.json(Person.format(updatedPerson))
     })
     .catch(error => {
-      conlose.log(error)
-      res.status(400).send({ error: 'malformated id'})
+      console.log(error)
+      res.status(400).send({ error: 'malformated id' })
     })
 })
 
@@ -91,10 +110,6 @@ app.post('/api/persons', (req, res) => {
       res.json(Person.format(savedPerson))
     })
 })
-
-const generateId = () => {
-  return (Math.random() * Math.floor(9999999999999999))
-}
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
